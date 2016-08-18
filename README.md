@@ -8,6 +8,10 @@ Scripts and data to compute the balances of The DAO token holders on the hard-fo
 
 # Summary
 
+During the hard-fork of the Ethereum chain on block 1,920,000 the ethers (ETH) from The DAO and it's children were moved into a withdrawal contract at [0xbf4ed7b27f1d666546e30d74d50d173d20bca754](https://etherscan.io/address/0xbf4ed7b27f1d666546e30d74d50d173d20bca754#code).
+
+The DAO token holders (DTH) could then convert their The DAO tokens (DAO) back to ETH for a refund at a rate of 100 DAO = 1 ETH. This analysis looks at the statistics of the number of accounts that have converted the DAOs into ETHs.
+
 <br />
 
 ---
