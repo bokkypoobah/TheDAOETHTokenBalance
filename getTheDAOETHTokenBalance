@@ -1,0 +1,122 @@
+#!/bin/sh
+# ------------------------------------------------------------------------------
+# Retrieve The DAO Creation and Transfer events, collecting addresses. Then 
+# retrieve the pre-hard-fork balances and the current balances for these 
+# addresses.
+#
+# v2 improvements
+# * Summing totals as BigNumbers instead of floats
+# * Only including non-zero balances at block 1919999 in counter
+#
+# Usage:
+#   1. Download this script to getTheDAOETHTokenBalance .
+#   2. `chmod 700 getTheDAOETHTokenBalance`
+#   3. Run `geth console` in a window.
+#   4. Then run this script `./getTheDAOETHTokenBalance` in a separate window.
+#
+# Enjoy. (c) BokkyPooBah 2016. The MIT licence.
+# ------------------------------------------------------------------------------
+
+DATE=`date -u +%Y%m%d_%H%M%S`
+OUTPUT=theDAOETHTokenBalance_${DATE}UTC_all.txt
+CREATION=theDAOETHTokenBalance_${DATE}UTC_creation.txt
+TRANSFER=theDAOETHTokenBalance_${DATE}UTC_transfer.txt
+BALANCE=theDAOETHTokenBalance_${DATE}UTC_balance.txt
+
+geth attach << EOF | egrep "^Header|^Data|^Stats|^Footer" > $OUTPUT
+var theDAOABIFragment = [{"constant":true,"inputs":[{"name":"_owner","type":"address"}],"name":"balanceOf","outputs":[{"name":"balance","type":"uint256"}],"type":"function"}, {"anonymous":false,"inputs":[{"indexed":true,"name":"to","type":"address"},{"indexed":false,"name":"amount","type":"uint256"}],"name":"CreatedToken","type":"event"}, {"anonymous":false,"inputs":[{"indexed":true,"name":"_from","type":"address"},{"indexed":true,"name":"_to","type":"address"},{"indexed":false,"name":"_amount","type":"uint256"}],"name":"Transfer","type":"event"}];
+var theDAOAddress = "0xBB9bc244D798123fDe783fCc1C72d3Bb8C189413";
+var theDAO = web3.eth.contract(theDAOABIFragment).at(theDAOAddress);
+
+// The DAO created in block 1428757 Apr-30-2016 01:42:58 AM +UTC
+var creationStartBlock = 1428757;
+// First The DAO creation event with non-zero extraBalance in block 1520861 May-15-2016 09:00:16 AM +UTC
+var creationWithExtraBalanceStartBlock = 1520861;
+// Last The DAO creation event in block 1599205 May-28-2016 08:59:47 AM +UTC
+var creationEndBlock = 1599205;
+// First The DAO transfer event in block 1599207 May-28-2016 09:00:07 AM +UTC, but use block above
+var transferStartBlock = creationEndBlock + 1;
+// Last The DAO transfer
+var transferEndBlock = eth.blockNumber;
+// Pre hard-fork block
+var preHardForkBlock = 1919999;
+// Hard-fork block
+var hardForkBlock = 1920000;
+// Current block
+var currentBlock = 2082500; // Aug-16-2016 12:24:57 PM +UTC
+
+// Collect addresses
+var addresses = {};
+
+// --- Get creation events ---
+var startBlock = creationStartBlock;
+var endBlock = creationEndBlock;
+
+// Testing
+// startBlock = creationWithExtraBalanceStartBlock - 5;
+// endBlock = creationWithExtraBalanceStartBlock + 5;
+
+var theDAOCreatedTokenEvent = theDAO.CreatedToken({}, {fromBlock: startBlock, toBlock: endBlock});
+console.log("HeaderCreation\tTokenOwner");
+var i = 0;
+theDAOCreatedTokenEvent.watch(function(error, result) {
+  addresses[result.args.to] = 1;
+  i = i + 1;
+  console.log("DataCreation\t" + i + "\t" + result.args.to);
+});
+
+// --- Get transfer events ---
+var startBlock = transferStartBlock;
+var endBlock = currentBlock;
+
+// Testing
+// startBlock = transferStartBlock;
+// endBlock = transferStartBlock + 10;
+
+var theDAOTransferEvent = theDAO.Transfer({}, {fromBlock: startBlock, toBlock: endBlock});
+console.log("HeaderTransfer\tFrom\tTo");
+i = 0;
+theDAOTransferEvent.watch(function(error, result) {
+  addresses[result.args._from] = 1;
+  addresses[result.args._to] = 1;
+  i = i + 1;
+  console.log("DataTransfer\t" + i + "\t" + result.args._from + "\t" + result.args._to);
+});
+
+// --- Get balances ---
+console.log("HeaderBalance\tNumber\tAddress\tPreHardForkDAO\tCurrentDAO\tChangeDAO\tPreHardForkETH\tCurrentETH\tChangeETH");
+var daosPreHardForkTotal = 0;
+var daosCurrentTotal = 0;
+var daosChangeTotal = 0;
+i = 0;
+for (var address in addresses) {
+  var daosPreHardFork = theDAO.balanceOf(address, preHardForkBlock);
+  var daosCurrent = theDAO.balanceOf(address, currentBlock);
+  if (daosPreHardFork != 0 || daosCurrent != 0) {
+    i++;
+    var daosChange = daosCurrent - daosPreHardFork;
+    var ethsPreHardFork = eth.getBalance(address, preHardForkBlock);
+    var ethsCurrent = eth.getBalance(address, currentBlock);
+    var ethsChange = ethsCurrent - ethsPreHardFork;
+    daosPreHardForkTotal = daosPreHardForkTotal - -daosPreHardFork;
+    daosCurrentTotal = daosCurrentTotal - -daosCurrent;
+    daosChangeTotal = daosChangeTotal - -daosChange;
+    console.log("DataBalance\t" + i + "\t" + address + "\t" + 
+      (daosPreHardFork/1e16).toFixed(16) + "\t" + (daosCurrent/1e16).toFixed(16) + "\t" + (daosChange/1e16).toFixed(16) + "\t" + 
+      (ethsPreHardFork/1e18).toFixed(18) + "\t" + (ethsCurrent/1e18).toFixed(18) + "\t" + (ethsChange/1e18).toFixed(18));
+  }
+}
+
+console.log("Stats\tnonZeroAccounts\t" + i);
+console.log("Stats\tdaosPreHardForkTotal\t" + daosPreHardForkTotal.toPrecision(30) + "\t" + (daosPreHardForkTotal/1e16).toFixed(16));
+console.log("Stats\tdaosCurrentTotal\t" + daosCurrentTotal.toPrecision(30) + "\t" + (daosCurrentTotal/1e16).toFixed(16));
+console.log("Stats\tdaosChangeTotal\t" + daosChangeTotal.toPrecision(30) + "\t" + (daosChangeTotal/1e16).toFixed(16));
+
+console.log("Footer\tReport generated at " + (new Date()).toGMTString() + " with latest block number " + currentBlock);
+
+EOF
+
+egrep "HeaderCreation|DataCreation|Footer" $OUTPUT > $CREATION
+egrep "HeaderTransfer|DataTransfer|Footer" $OUTPUT > $TRANSFER
+egrep "HeaderBalance|DataBalance|Footer|Stats" $OUTPUT > $BALANCE
+
