@@ -21,13 +21,13 @@ Summary of results:
   * The Withdrawal Contract has a balance of 916307168.972487 DAO at block 2,082,500
   * Number of accounts that have converted their DAO holdings into ETH between blocks 1,919,999 and 2,082,500 = 7021 (31.14%)
   * Number of accounts that have NOT converted their DAO holdings into ETH between blocks 1,919,999 and 2,082,500 = 15,524 (68.86%). Of these:
-    * 8,632 have a balance < 100 DAO (1 ETH)
-    * 2,943 have a balance < 1,000 DAO (10 ETH) and >= 100 DAO (1 ETH)
-    * 2,691 have a balance < 10,000 DAO (100 ETH) and >= 1,000 DAO (10 ETH)
-    * 1,075 have a balance < 100,000 DAO (1,000 ETH) and >= 10,000 DAO (100 ETH)
-    * 154 have a balance < 1,000,000 DAO (10,000 ETH) and >= 100,000 DAO (1,000 ETH)
-    * 24 have a balance < 10,000,000 DAO (100,000 ETH) and >= 1,000,000 DAO (10,000 ETH)
-    * 5 have a balance >= 1,000,000 DAO (10,000 ETH)
+    * 8,632 have a balance < 100 DAO (1 ETH), with all these accounts holding 68,447 DAO (684 ETH)
+    * 2,943 have a balance < 1,000 DAO (10 ETH) and >= 100 DAO (1 ETH), with all these accounts holding 1,118,868 DAO (11,188 ETH)
+    * 2,691 have a balance < 10,000 DAO (100 ETH) and >= 1,000 DAO (10 ETH), with all these accounts holding 9,056,305 DAO (90,563 ETH)
+    * 1,075 have a balance < 100,000 DAO (1,000 ETH) and >= 10,000 DAO (100 ETH), with all these accounts holding 29,629,208 DAO (296,292 ETH)
+    * 154 have a balance < 1,000,000 DAO (10,000 ETH) and >= 100,000 DAO (1,000 ETH), with all these accounts holding 37,405,554 DAO (374,055 ETH)
+    * 24 have a balance < 10,000,000 DAO (100,000 ETH) and >= 1,000,000 DAO (10,000 ETH), with all these accounts holding 69,448,324 DAO (694,483 ETH)
+    * 5 have a balance >= 1,000,000 DAO (10,000 ETH), with all these accounts holding 90782720 DAO (907,827 ETH)
 * Total DAO balance at block 1,919,999 = 1,153,816,598.70
 * Total DAO balance at block 2,082,500 = 1,153,816,598.70
   * DAO balance of the Withdrawal Contract at block 2,082,500 = 916,307,167.97 (79.42%)
