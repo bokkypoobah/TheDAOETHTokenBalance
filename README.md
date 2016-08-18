@@ -8,9 +8,15 @@ Scripts and data to compute the balances of The DAO token holders on the hard-fo
 
 # Summary
 
-During the hard-fork of the Ethereum chain on block 1,920,000 the ethers (ETH) from The DAO and it's children were moved into a withdrawal contract at [0xbf4ed7b27f1d666546e30d74d50d173d20bca754](https://etherscan.io/address/0xbf4ed7b27f1d666546e30d74d50d173d20bca754#code).
+During the hard-fork of the Ethereum chain on block 1,920,000 the ethers (ETH) from The DAO and it's children were moved into a Withdrawal Contract at [0xbf4ed7b27f1d666546e30d74d50d173d20bca754](https://etherscan.io/address/0xbf4ed7b27f1d666546e30d74d50d173d20bca754#code).
 
-The DAO token holders (DTH) could then convert their The DAO tokens (DAO) back to ETH for a refund at a rate of 100 DAO = 1 ETH. This analysis looks at the statistics of the number of accounts that have converted the DAOs into ETHs.
+The DAO token holders (DTH) could then convert their The DAO tokens (DAO) back to ETH for a refund at a rate of 100 DAO = 1 ETH. When DTHs convert their DAOs into ETH, they transfer the DAO balances from their account to the Withdrawal Contract and the Withdrawal Contract then sends the equivalent ETH to the DTH's account.
+
+The script in this repository queries the blockchain for all The DAO `CreatedToken` events and `Transfer` events to compile a list of all addresses that could possibly be holding DAO balances. The script then finds the DAO balance of each address just prior to the hard fork at block 1,919,999 and at block 2,082,500 (Aug-16-2016 12:24:57 PM +UTC).
+
+The number of accounts that have held DAOs at either of the blocks 1,919,999 and/or 2,082,500 number 22,546. This is the number of non-zero lines in the Balances worksheet in the spreadsheet.
+
+
 
 <br />
 
@@ -25,8 +31,6 @@ Running the script [getTheDAOETHTokenBalance](https://github.com/bokkypoobah/The
 * [theDAOETHTokenBalance_20160818_094448UTC_creation.txt](https://github.com/bokkypoobah/TheDAOETHTokenBalance/blob/master/theDAOETHTokenBalance_20160818_094448UTC_creation.txt)
 * [theDAOETHTokenBalance_20160818_094448UTC_transfer.txt](https://github.com/bokkypoobah/TheDAOETHTokenBalance/blob/master/theDAOETHTokenBalance_20160818_094448UTC_transfer.txt)
 * [theDAOETHTokenBalance_20160818_094448UTC_balance.txt](https://github.com/bokkypoobah/TheDAOETHTokenBalance/blob/master/theDAOETHTokenBalance_20160818_094448UTC_balance.txt)
-
-The script queries the blockchain for all The DAO `CreatedToken` events and `Transfer` events to compile a list of all addresses that could possibly be holding DAO balances. The script then finds the DAO balance of each address just prior to the hard fork at block 1,919,999 and at block 2,082,500 (Aug-16-2016 12:24:57 PM +UTC).
 
 ## Check
 The bottom of the _balances.txt file has the following statistics:
