@@ -14,7 +14,10 @@ The DAO token holders (DTH) could then convert their The DAO tokens (DAO) back t
 
 The script in this repository queries the blockchain for all The DAO `CreatedToken` events and `Transfer` events to compile a list of all addresses that could possibly be holding DAO balances. The script then finds the DAO balance of each address just prior to the hard fork at block 1,919,999 and at block 2,082,500 (Aug-16-2016 12:24:57 PM +UTC).
 
-The number of accounts that have held DAOs at either of the blocks 1,919,999 and/or 2,082,500 number 22,546. This is the number of non-zero lines in the Balances worksheet in the spreadsheet.
+The results are being analysed currently in the [theDAOETHTokenBalance_20160818_094448UTC_balance.xlsx](https://github.com/bokkypoobah/TheDAOETHTokenBalance/blob/master/theDAOETHTokenBalance_20160818_094448UTC_balance.xlsx) spreadsheet.
+
+Summary of results:
+* The number of accounts that have held DAOs at either of the blocks 1,919,999 and/or 2,082,500 number 22,546. This is the number of non-zero lines in the Balances worksheet in the spreadsheet.
 
 
 
