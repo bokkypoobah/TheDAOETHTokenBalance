@@ -18,13 +18,12 @@ The results are being analysed currently in the [theDAOETHTokenBalance_20160818_
 
 Summary of results:
 * The number of accounts that have held DAOs at either of the blocks 1,919,999 and/or 2,082,500 = 22,546
-  * Number of accounts that have changed their DAO holdings between blocks 1,919,999 and 2,082,500 = 7830 (34.73%)
-  * Number of accounts that have NOT changed their DAO holdings between blocks 1,919,999 and 2,082,500 = 14,716 (65.27%)
+  * Number of accounts that have converted their DAO holdings into ETH between blocks 1,919,999 and 2,082,500 = 7021 (31.14%)
+  * Number of accounts that have NOT converted their DAO holdings into ETH between blocks 1,919,999 and 2,082,500 = 15,525 (68.86%)
 * Total DAO balance at block 1,919,999 = 1,153,816,598.70
 * Total DAO balance at block 2,082,500 = 1,153,816,598.70
   * DAO balance of the Withdrawal Contract at block 2,082,500 = 916,307,167.97 (79.42%)
   * DAOs that have not been converted into ETHs at block 2,082,500 = 237,509,430.73	(20.58%)
-
 
 
 <br />
